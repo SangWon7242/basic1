@@ -3,6 +3,7 @@ package com.sbs.basic1;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,9 +17,11 @@ import java.util.*;
 @Controller
 public class HomeController {
   private int count;
+  private List<Person> people;
 
   public HomeController() {
     count = -1;
+    people  = new ArrayList<>();
   }
 
   // @GetMapping("/home/main") 의 의미
@@ -190,6 +193,23 @@ public class HomeController {
 
     return list;
   }
+
+  @GetMapping("/home/addPerson")
+  @ResponseBody
+  public String addPerson(String name, int age) {
+    Person p = new Person(name, age);
+    System.out.println(p);
+
+    people.add(p);
+
+    return "%d번 사람이 추가되었습니다.".formatted(p.getId());
+  }
+
+  @GetMapping("/home/people")
+  @ResponseBody
+  public List<Person> showPeople() {
+    return people;
+  }
 }
 
 class Car {
@@ -231,4 +251,23 @@ class CarV2 {
   @Setter
   private String name;
   private final List<Integer> relatedIds;
+}
+
+@AllArgsConstructor
+@Getter
+@ToString
+class Person {
+  private static int lastId;
+  private final int id;
+  private final String name;
+  private final int age;
+
+  static {
+    lastId = 0;
+  }
+
+  public Person(String name, int age) {
+    this(++lastId, name, age);
+  }
+
 }
