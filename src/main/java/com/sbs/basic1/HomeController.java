@@ -1,5 +1,8 @@
 package com.sbs.basic1;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.IOException;
 import java.util.*;
 
 // @Controller 의미
@@ -21,7 +25,7 @@ public class HomeController {
 
   public HomeController() {
     count = -1;
-    people  = new ArrayList<>();
+    people = new ArrayList<>();
   }
 
   // @GetMapping("/home/main") 의 의미
@@ -220,7 +224,7 @@ public class HomeController {
     // 조건에 맞는걸 찾았고 삭제까지 되었다면 true, 아니면 false 반환
     boolean removed = people.removeIf(person -> person.getId() == id);
 
-    if(removed == false) {
+    if (removed == false) {
       return "%d번 사람이 존재하지 않습니다.".formatted(id);
     }
 
@@ -235,7 +239,7 @@ public class HomeController {
         .findFirst() // 필터링 결과가 하나만 남는데, 그 하나 남은 걸 가져온다.
         .orElse(null); // 없으면 null을 반환해라.
 
-    if(found == null) {
+    if (found == null) {
       return "%d번 사람이 존재하지 않습니다.".formatted(id);
     }
 
@@ -243,6 +247,34 @@ public class HomeController {
     found.setAge(age);
 
     return "%d번 사람이 수정되었습니다.".formatted(id);
+  }
+
+  @GetMapping("/home/cookie/increase")
+  @ResponseBody
+  public int showCookieIncrease(HttpServletRequest req, HttpServletResponse resp) {
+    int countInCookie = 0;
+
+    if (req.getCookies() != null) {
+      countInCookie = Arrays.stream(req.getCookies())
+          .filter(cookie -> cookie.getName().equals("count"))
+          .map(cookie -> cookie.getValue())
+          .mapToInt(Integer::parseInt)
+          .findFirst()
+          .orElse(0);
+    }
+
+    int newCountInCookie = countInCookie + 1;
+
+    resp.addCookie(new Cookie("count",  newCountInCookie + ""));
+
+    return newCountInCookie;
+  }
+
+  @GetMapping("/home/regAndResp")
+  @ResponseBody
+  public void showRegAndResp(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    int age = Integer.parseInt(req.getParameter("age"));
+    resp.getWriter().append("Hello");
   }
 }
 
