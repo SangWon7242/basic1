@@ -1,0 +1,24 @@
+spring:
+  output:
+    ansi:
+      enabled: always # 콘솔 색상 변경
+  thymeleaf:
+    cache: false # 타임리프 캐시 종료
+  prefix: file:src/main/resources/templates/ # 템플릿 파일 경로
+  suffix: .html
+  application:
+    name: basic1
+  datasource:
+    # 데이터베이스 연결 URL
+    url: jdbc:mariadb://localhost:3306/basic1__dev?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
+    username: root
+    password:
+    driver-class-name: org.mariadb.jdbc.Driver
+
+  # server:
+  # port: 8080
+
+  jpa:
+    hibernate:
+      ddl-auto: create  # create, create-drop, update, validate, none
+    show-sql: true
