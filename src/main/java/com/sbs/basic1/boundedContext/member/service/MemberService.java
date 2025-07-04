@@ -36,4 +36,13 @@ public class MemberService {
   public Member findById(Long id) {
     return memberRepository.findById(id).orElse(null);
   }
+
+  public void join(String username, String password) {
+    Member member = Member.builder()
+      .username(username)
+      .password(password)
+      .build();
+
+    memberRepository.save(member);
+  }
 }

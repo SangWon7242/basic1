@@ -26,7 +26,7 @@ public class ArticleController {
       return RsData.of("F-2", "내용을 입력해주세요.");
     }
 
-    Article article = articleService.save(title, content);
+    Article article = articleService.write(title, content);
 
     return RsData.of("S-1", "%d번 게시물이 작성되었습니다.".formatted(article.getId()), article);
   }
