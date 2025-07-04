@@ -18,7 +18,6 @@ public class NotProd {
   CommandLineRunner initData(MemberService memberService, ArticleService articleService) {
     return args -> {
       // 여기에 초기 데이터를 삽입하는 코드를 작성합니다.
-      memberService.join("admin", "1234");
       memberService.join("user1", "1234");
       memberService.join("bbc", "1111");
       memberService.join("love", "5555");
@@ -28,6 +27,7 @@ public class NotProd {
       memberService.join("good", "456732");
       memberService.join("test", "1234");
       memberService.join("test2", "5678");
+      memberService.join("test3", "91011");
 
       articleService.write("제목1", "내용1");
       articleService.write("제목2", "내용2");
